@@ -30,11 +30,11 @@
 设置table-layout: fixed后，表格和列的宽度通过表格的宽度来设置，某一列的宽度仅由该列首行的单元格决定。在当前列中，该单元格所在行之后的行并不会影响整个列宽。
 
 * 其次，此处需要对th设置固定宽度。不设置宽度的首行单元格默认将会平均分配剩余宽度。
-`
-.th-1 {
-    width: 50%;
-}
-`
+
+    .th-1 {
+        width: 50%;
+    }
+
 * 再次，td中文本不换行，这样超出一行的部分被截取，显示...
 
 **overflow** 属性指定当内容溢出其块级容器时,是否剪辑内容，显示滚动条或显示溢出的内容。
@@ -46,9 +46,9 @@ ellipsis表示“用一个省略号 ('…', U+2026 HORIZONTAL ELLIPSIS)来表示
 **white-space** 属性是用来设置如何处理元素中的空白。
 nowrap表示“连续的空白符会被合并。但文本内的换行无效”
 
-.line-limit {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+    .line-limit {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
