@@ -21,11 +21,10 @@
 
 * 首先，需要为table设置 **width** 及 **table-layout** 属性；
 
-
-.table {
-    width: 100%;
-    table-layout: fixed;
-}
+    .table {
+        width: 100%;
+        table-layout: fixed;
+    }
 
 设置table-layout: fixed后，表格和列的宽度通过表格的宽度来设置，某一列的宽度仅由该列首行的单元格决定。在当前列中，该单元格所在行之后的行并不会影响整个列宽。
 
