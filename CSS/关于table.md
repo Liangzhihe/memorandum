@@ -7,13 +7,19 @@
             <tr>
                 <th class="th-1">title1</th>
                 <th class="th-2">title2</th>
-                <th class="th-3">title3</th>
             </tr>
         <thead>
         <tbody>
             <tr>
-                <td class="line-limit">关某虽一介武夫，亦颇知忠义二字</td>
+                <td class="line-limit">关某虽一介武夫，亦颇知忠义二字，正所谓择木之禽得其良木</td>
                 <td class="line-limit">俺也一样</td>
+            </tr>
+            <tr>
+                <td class="line-limit">某誓与兄患难与共，终身相伴，生死相随</td>
+                <td class="line-limit">俺也一样</td>
+            </tr>
+            <tr>
+                <td class="line-limit">有违此言，天人共戮之</td>
                 <td class="line-limit">俺也一样</td>
             </tr>
         </tbody>
@@ -23,7 +29,7 @@
 #### 首先，需要为table设置 **width** 及 **table-layout** 属性；
 
     .table {
-        width: 100%;
+        width: 400px;
         table-layout: fixed;
     }
 
@@ -32,7 +38,7 @@
 #### 其次，此处需要对th设置固定宽度。不设置宽度的首行单元格默认将会平均分配剩余宽度。
 
     .th-1 {
-        width: 50%;
+        width: 60%;
     }
 
 #### 再次，td中文本不换行，这样超出一行的部分被截取，显示...
