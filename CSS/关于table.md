@@ -19,7 +19,7 @@
 </table>
 
 
-* 首先，需要为table设置*width*及*table-layout*属性；
+* 首先，需要为table设置 **width** 及*table-layout*属性；
 
 
 .table {
