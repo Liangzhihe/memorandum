@@ -11,16 +11,16 @@
         <thead>
         <tbody>
             <tr>
-                <td class="line-limit">关某虽一介武夫，亦颇知忠义二字，正所谓择木之禽得其良木</td>
-                <td class="line-limit">俺也一样</td>
+                <td>关某虽一介武夫，亦颇知忠义二字，正所谓择木之禽得其良木</td>
+                <td>俺也一样</td>
             </tr>
             <tr>
-                <td class="line-limit">某誓与兄患难与共，终身相伴，生死相随</td>
-                <td class="line-limit">俺也一样</td>
+                <td>某誓与兄患难与共，终身相伴，生死相随</td>
+                <td>俺也一样</td>
             </tr>
             <tr>
-                <td class="line-limit">有违此言，天人共戮之</td>
-                <td class="line-limit">俺也一样</td>
+                <td>有违此言，天人共戮之</td>
+                <td>俺也一样</td>
             </tr>
         </tbody>
     </table>
@@ -50,9 +50,9 @@ hidden 表示“内容会被修剪，并且其余内容不可见”。
 ellipsis表示“用一个省略号 ('…', U+2026 HORIZONTAL ELLIPSIS)来表示被截断的文本”。
 
 **white-space** 属性是用来设置如何处理元素中的空白。
-nowrap表示“连续的空白符会被合并。但文本内的换行无效”
+nowrap表示“连续的空白符会被合并。但文本内的换行无效”。
 
-    .line-limit {
+    .table tbody td {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
