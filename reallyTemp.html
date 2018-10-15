@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .main {
+            width: 100%;
+            background-color: #fff;
+            color: #000;
+        }
+
+        .main h2 {
+            text-align: center;
+        }
+
+        .main p {
+            text-align: left;
+            padding: 0;
+        }
+
+        .main hr {
+            margin-top: 0.3rem;
+        }
+
+        .main table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .main table td,
+        .main table th {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .btn {
+            width: 6rem;
+            height: 2rem;
+            line-height: 2rem;
+            text-align: center;
+            color: #fff;
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+      
+
+    <img id="screenShotImg" alt="我是显示截图的">
+    <div class="btn">点击截图</div>
+    <div id="targetDom" class="main">
+        <div style="padding: 0 0.5rem 0.5rem; text-align: center;">
+            <h2>哈哈哈</h2>
+            <hr />
+            <table>
+                <thead>
+                    <tr style="height: 1.5rem;">
+                        <th style="vertical-align: middle;">姓名</th>
+                        <th style="vertical-align: middle;">性别</th>
+                        <th style="vertical-align: middle;">年龄</th>
+                        <th style="vertical-align: middle;">爱好</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 25%;vertical-align: middle;">张三</td>
+                        <td style="width: 25%;vertical-align: middle;">男</td>
+                        <td style="width: 25%;vertical-align: middle;">23</td>
+                        <td style="width: 25%;vertical-align: middle;">笑</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;vertical-align: middle;">李四</td>
+                        <td style="width: 25%;vertical-align: middle;">男</td>
+                        <td style="width: 25%;vertical-align: middle;">23</td>
+                        <td style="width: 25%;vertical-align: middle;">笑</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;vertical-align: middle;">王五</td>
+                        <td style="width: 25%;vertical-align: middle;">男</td>
+                        <td style="width: 25%;vertical-align: middle;">23</td>
+                        <td style="width: 25%;vertical-align: middle;">笑</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;vertical-align: middle;">赵六</td>
+                        <td style="width: 25%;vertical-align: middle;">男</td>
+                        <td style="width: 25%;vertical-align: middle;">23</td>
+                        <td style="width: 25%;vertical-align: middle;">笑</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;vertical-align: middle;">李七</td>
+                        <td style="width: 25%;vertical-align: middle;">男</td>
+                        <td style="width: 25%;vertical-align: middle;">23</td>
+                        <td style="width: 25%;vertical-align: middle;">笑</td>
+                    </tr>
+                </tbody>
+            </table>
+            <img src="./haha.png" width="320" style="margin:0.5rem;" />
+            <p>结束了，ending</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+    <script>
+
+            document.querySelector('.btn').onclick = function(){
+                screenShot($('#targetDom'),function (canvas,width,height) {
+                    document.querySelector('#screenShotImg').src = canvas;
+                    document.querySelector('#screenShotImg').style.width = width+"px";
+                    document.querySelector('#screenShotImg').style.height = height+"px";
+                });
+            }
+         
+            /**
+             * 截图功能
+             * targetDom 要克隆的目标dom元素
+             * cb 回调函数
+             */
+            function screenShot(targetDom,cb){
+                var copyDom = targetDom.clone();//克隆dom节点
+                copyDom.css('display','block');
+                $('body').append(copyDom);//把copy的截图对象追加到body后面
+                var width = copyDom.width();//dom宽
+                var height = copyDom.height();//dom高
+                var scale = 2;//放大倍数
+                var canvas = document.createElement('canvas');
+                canvas.width = width*scale;//canvas宽度
+                canvas.height = height*scale;//canvas高度
+                var content = canvas.getContext("2d");
+                content.scale(scale,scale);
+                var rect = copyDom.get(0).getBoundingClientRect();//获取元素相对于视察的偏移量
+                content.translate(-rect.left,-rect.top);//设置context位置，值为相对于视窗的偏移量负值，让图片复位
+                html2canvas(copyDom, {
+                    allowTaint:true,
+                    tainTest:true,
+                    scale:scale,
+                    canvas:canvas,
+                    width:width,
+                    heigth:height,
+                    onrendered: function(canvas) {
+                        if(cb){
+                            copyDom.css('display','none');
+                            cb(canvas.toDataURL("./png"),width,height);
+                        }
+                    }
+                });
+            }
+        </script>
+        
+</body>
+
+</html>
