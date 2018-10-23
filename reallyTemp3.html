@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,12 +53,34 @@
         .box .close {
             font-size: 40px;
             margin: 5px;
+            z-index: 3;
+        }
+
+        .video-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #serverParam {
+            /* 多余，直接display:none就行了，不影响 */
+            position: absolute;
+            z-index: 1;
+        }
+        
+        .video-box object {
+            position: absolute;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
         }
     </style>
 </head>
+
 <body>
     <div class="box">
-        
+
         <form action="" method="get" class="form-horizontal">
             <div class="form-group">
                 <label for="project1" class="col-sm-3 control-label">所属项目:</label>
@@ -70,12 +93,12 @@
                         <option value="5">5</option>
                     </select>
                 </div>
-               
+
             </div>
             <div class="form-group">
                 <label for="position1" class="col-sm-3 control-label">选择区域:</label>
                 <div class="col-sm-9">
-                    <select name="position" id="position1"  class="position form-control">
+                    <select name="position" id="position1" class="position form-control">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -83,55 +106,41 @@
                         <option value="5">5</option>
                     </select>
                 </div>
-                
+
             </div>
-            
+
             <a type="button" class="btn btn-primary center-block btn-open-video">播放</a>
         </form>
-        <!-- <div class="video-box" style="display: none">
-            <button type="button" class="close" aria-label="Close" style="position: absolute; z-index: 1000; right: 10px;"><span aria-hidden="true">&times;</span></button>
-            <p>{{>name}} </p>
-            <video  src="http://www.w3school.com.cn/i/movie.ogg" controls="controls" style="width: 100%;height: 100%">
-                だから、今週末、もう存在しない
-            </video>
-        </div> -->
-        
+
+
     </div>
     <div class="box">
-        
-            <form action="" method="get" class="form-horizontal">
-                <div class="form-group">
-                    <label for="project2" class="col-sm-3 control-label">所属项目:</label>
-                    <div class="col-sm-9">
-                        <select name="project" id="project2" class="project form-control">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                   
-                </div>
-                <div class="form-group">
-                    <label for="position2" class="col-sm-3 control-label">选择区域:</label>
-                    <div class="col-sm-9">
-                        <select name="position" id="position2"  class="position form-control">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                    
-                </div>
-                
-                <a type="button" class="btn btn-primary center-block btn-open-video">播放</a>
-            </form>
-        </div>
-
+            <div class="video-box">
+                <button type="button" class="close" aria-label="Close" style="position: absolute; z-index: 1000; right: 10px;"><span aria-hidden="true">&times;</span></button>
+                <ul id="serverParam" style="display: none">
+                    <!-- 这个ul随便甩到哪里都不影响，一个页面有一个就成 -->
+                    <li>
+                        <input type="text" id="ip" value="@Model.ServiceIP.Trim()" style="width: 120px">
+                    </li>
+                    <li>
+                        <input type="text" id="port" value="@Model.Port.Trim()" style="width: 120px">
+                    </li>
+                    <li>
+                        <input type="text" id="user" value="@Model.LoginName.Trim()" style="width: 120px">
+                    </li>
+                    <li>
+                        <input type="text" id="pwd" value="@Model.Password.Trim()" style="width: 120px">
+                    </li>
+                    <li>
+                        <input type="text" id="CameraNubmer" value="@Model.CameraNubmer.Trim()" style="width: 120px">
+                    </li>
+                </ul>
+                <object id="WebClientPlugin" classid="CLSID:D3E383B6-765D-448D-9476-DFD8B499926D" codebase="DpsdkOcx.cab#version=1.0.0.0"></object>
+            </div>
+    </div>
     
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js"></script>
@@ -144,19 +153,7 @@
             console.log(projectName,position);
             console.log({projectName: projectName, position: position});
             $(this).parents('form').hide();
-            // $.ajax({
-            //     url: '',
-            //     data: {
-            //         projectName: projectName,
-            //         position: position
-            //     },
-            //     method: 'get',
-            //     success: function (data) {
-            //         var moviesUrl = data.url;
-            //         $(this).parents('.box').find('.video-box video').attr({src: moviesUrl});
-            //         $(this).parents('.box').find('.video-box').show();
-            //     }
-            // });
+            // 最好还是用render的方式，然后x掉的时候直接remove，切断视频的连接
             $(this).parents('.box').append(
 		        $("#movieTemplate").render(movies)
 	        );
@@ -175,15 +172,34 @@
     </script>
 
     <script id="movieTemplate" type="text/x-jsrender">
-        
+
         <div class="video-box">
             <button type="button" class="close" aria-label="Close" style="position: absolute; z-index: 1000; right: 10px;"><span aria-hidden="true">&times;</span></button>
-            <p>{{>name}} </p>
+            <p style="position: absolute">{{>name}} </p>
             <video  src="http://www.w3school.com.cn/i/movie.ogg" controls="controls" style="width: 100%;height: 100%">
                 だから、今週末、もう存在しない
             </video>
         </div>
 
     </script>
+    <script>
+        $(function () {
+            //加载页面后自动打开选中项的摄像头；
+            var selectedItem = $('.pos-select option:selected');
+            var c = new CameraCtrl({
+                objPluginEl: $('#WebClientPlugin'),
+                serviceEl: $('#serverParam'),//@Model.ServiceIP.Trim(),@Model.Port.Trim(),@Model.LoginName.Trim(),@Model.Password.Trim(),@Model.CameraNubmer.Trim()
+                // ctrlEl: $('.ctrlBox'),
+
+                //通道ID
+                cameraId: selectedItem.data('id'), //@item.CameraNumber
+                cameraPlaceName: selectedItem.data('name'), //@item.CameraName
+                projectName: $('#projectName').val() //@Model.ProjectName
+            });
+
+            c.init();
+        })
+    </script>
 </body>
+
 </html>

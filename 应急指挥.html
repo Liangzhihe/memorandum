@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f3f3f3;
+        }
+        .box {
+            float: left;
+            margin: 100px;
+            width: 530px;
+            height: 420px;
+            background: #fff url("./boxBackground.png") no-repeat;
+            background-size: 100% 100%;
+            position: relative;
+        }
+
+        form {
+            width: 80%;
+            margin-left: 10%;
+            height: 150px;
+            position: absolute;
+            top: 50%;
+            margin-top: -75px;
+        }
+
+        form label {
+            color: #fff;
+        }
+
+        .form-horizontal .control-label {
+            text-align: left;
+        }
+
+        form .form-control {
+            background-color: transparent;
+            box-shadow: none !important;
+            border: none;
+            color: #ccc;
+        }
+
+
+
+        form .form-group {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .box .close {
+            font-size: 40px;
+            margin: 5px;
+            z-index: 3;
+        }
+
+        .video-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #serverParam {
+            /* 多余，直接display:none就行了，不影响 */
+            position: absolute;
+            z-index: 1;
+        }
+        
+        .video-box object {
+            position: absolute;
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="serverParam" style="display: none">
+        <!-- 这个ul随便甩到哪里都不影响，一个页面有一个就成 -->
+        <li>
+            <input type="text" id="ip" value="@Model.ServiceIP.Trim()" style="width: 120px">
+        </li>
+        <li>
+            <input type="text" id="port" value="@Model.Port.Trim()" style="width: 120px">
+        </li>
+        <li>
+            <input type="text" id="user" value="@Model.LoginName.Trim()" style="width: 120px">
+        </li>
+        <li>
+            <input type="text" id="pwd" value="@Model.Password.Trim()" style="width: 120px">
+        </li>
+        <li>
+            <input type="text" id="CameraNubmer" value="@Model.CameraNubmer.Trim()" style="width: 120px">
+        </li>
+    </ul>
+    <div class="box">
+
+        <form action="" method="get" class="form-horizontal">
+            <div class="form-group">
+                <label for="project1" class="col-sm-3 control-label">所属项目:</label>
+                <div class="col-sm-9">
+                    <select name="project" id="project1" class="project form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="position1" class="col-sm-3 control-label">选择区域:</label>
+                <div class="col-sm-9">
+                    <select name="position" id="position1" class="position form-control">
+                        <!-- 此处根据project的值，for循环生成option -->
+                        <option value="@item.CameraNumber" data-id="@item.CameraNumber" data-name="@item.CameraName">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <a type="button" class="btn btn-primary center-block btn-open-video">播放</a>
+        </form>
+
+
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-rc.70/jsrender.min.js"></script>
+    <script>
+        $(function () {
+            $('body').on('click', '.btn-open-video', function() {
+            var box = $(this).parents('.box');
+            var objPluginEl = box.find('#WebClientPlugin'); //视频对象
+            var selectedItem = box.find('.position option:selected');
+            var cameraId = selectedItem.data('id');
+            var cameraPlaceName = selectedItem.data('name');
+            var projectName = box.find('.project option:selected').val();
+            
+            // console.log(cameraId,cameraPlaceName,projectName)
+            $(this).parents('form').hide();
+            // 最好还是用render的方式，然后x掉的时候直接remove，切断视频的连接
+            box.append(
+		        $("#movieTemplate").render()
+            );
+            cameraInit({
+                objPluginEl: objPluginEl,
+                cameraId: cameraId,
+                cameraPlaceName: cameraPlaceName,
+                projectName: projectName
+            });
+        });
+
+        $('body').on('click', '.close', function() {
+            var form = $(this).parents('.box').find('form');
+            $(this).parents('.video-box').remove();
+            form.show();
+            
+        });
+
+        function cameraInit(params) {
+
+            console.log(params); return 0;
+            var c = new CameraCtrl({
+                objPluginEl: params.objPluginEl,
+                serviceEl: $('#serverParam'), //@Model.ServiceIP.Trim(),@Model.Port.Trim(),@Model.LoginName.Trim(),@Model.Password.Trim(),@Model.CameraNubmer.Trim()
+                // ctrlEl: $('.ctrlBox'),
+
+                //通道ID
+                cameraId: params.cameraId, //@item.CameraNumber
+                cameraPlaceName: params.cameraPlaceName, //@item.CameraName
+                projectName: params.projectName //@Model.ProjectName
+            });
+
+            c.init();
+        }
+        })
+
+
+        
+
+
+    </script>
+
+    <script id="movieTemplate" type="text/x-jsrender">
+
+        <div class="video-box">
+            <button type="button" class="close" aria-label="Close" style="position: absolute; z-index: 1000; right: 10px;"><span aria-hidden="true">&times;</span></button>
+            <object id="WebClientPlugin" classid="CLSID:D3E383B6-765D-448D-9476-DFD8B499926D" codebase="DpsdkOcx.cab#version=1.0.0.0"></object>
+        </div>
+
+    </script>
+
+</body>
+
+</html>
