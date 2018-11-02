@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        select {
+            width: 200px !important;
+        }
+
+        .echarts-height {
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="p">项目</label>
+                <select id="projectSelect" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="contractorSelect">承包商</label>
+                <select id="contractorSelect" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+
+            </div>
+
+        </form>
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="contractorListSelect">承包商</label>
+                <select id="contractorListSelect" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+
+            </div>
+
+        </form>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default p-shadow">
+                    <div class="panel-heading">
+                        <h3 class="panel-title p-weight">执行情况，横图，（包含已评价和未评价两行）</h3>
+                    </div>
+                    <div class="panel-body bar echarts-height" id="bar">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default p-shadow">
+                    <div class="panel-heading">
+                        <h3 class="panel-title p-weight">评价结果(分四个维度，优秀/良好/合格/不合格)</h3>
+                    </div>
+                    <div class="panel-body pie echarts-height" id="pie">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default p-shadow">
+                    <div class="panel-heading">
+                        <h3 class="panel-title p-weight">执行情况，横图，（包含已评价和未评价两行）</h3>
+                    </div>
+                    <div class="panel-body line echarts-height" id="line">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default p-shadow">
+                    <div class="panel-heading">
+                        <h3 class="panel-title p-weight">执行情况，横图，（包含已评价和未评价两行）</h3>
+                    </div>
+                    <div class="panel-body pie echarts-height" id="pie1">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.0.4/echarts-en.common.min.js"></script>
+    <script>
+        $(function () {
+            function barChart() {
+                var bar = echarts.init(document.getElementById('bar'));
+
+                function initChart() {
+
+                    var bars = {
+                        xAxis: {
+                            type: 'value'
+                        },
+                        yAxis: {
+                            type: 'category',
+                            data: ['未评价', '已评价']
+                        },
+                        series: [{
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'insideRight'
+                                }
+                            },
+                            data: [120, 200],
+                            type: 'bar',
+                            itemStyle: {
+                                normal: {
+                                    color: function (params) {
+                                        var colorList = [
+                                            '#c23531', '#2f4554', '#61a0a8', '#d48265'
+                                        ];
+                                        return colorList[params.dataIndex]
+                                    }
+                                }
+                            }
+                        }]
+
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    bar.setOption(bars);
+
+                    $.ajax({
+                        url: "./barChartData.json",
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                            bar.setOption({
+                                yAxis: [{
+                                    data: response[0]
+                                }],
+                                series: [{
+                                    data: response[1]
+                                }]
+                            })
+                        },
+                        error: function (XMLHttpRequest, textStatus) {
+                            console.log(textStatus);
+                        }
+                    });
+
+                }
+
+                $(window).resize(function () {
+                    bar.resize();
+                });
+
+                initChart();
+
+            }
+
+            function pieChart() {
+                var pie = echarts.init(document.getElementById('pie'));
+
+                function initChart() {
+                    var pies = {
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left'
+                        },
+                        series: [{
+                            name: '评价结果',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '60%'],
+                            label: {
+                                normal: {
+                                    show: true,
+                                    formatter: '{b}: {c} {d}%'
+                                }
+                            },
+                            data: [{
+                                    value: 335,
+                                    name: '优秀'
+                                },
+                                {
+                                    value: 310,
+                                    name: '良好'
+                                },
+                                {
+                                    value: 234,
+                                    name: '合格'
+                                },
+                                {
+                                    value: 135,
+                                    name: '不合格'
+                                },
+                            ],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }]
+                    };
+                    pie.setOption(pies);
+
+                    $.ajax({
+                        url: "./pie1ChartData.json",
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                            pie.setOption({
+                                series: [{
+                                    data: response
+                                }]
+                            })
+                        },
+                        error: function (XMLHttpRequest, textStatus) {
+                            console.log(textStatus);
+                        }
+                    });
+                }
+                //resize
+                $(window).resize(function () {
+                    pie.resize();
+                });
+
+                initChart();
+            }
+
+            function lineChart() {
+                // projectData存储project和contractor的name和id
+                var projectData;
+                //线状图
+                var line = echarts.init(document.getElementById('line'));
+
+                // ajax获取项目和承包商的name及id数据
+                function getProjectData() {
+                    $.ajax({
+                        url: "./lineListData.json",
+                        dataType: "json",
+                        async: false,
+                        success: function (response) {
+                            console.log(response);
+                            projectData = response;
+                        },
+                        error: function (XMLHttpRequest, textStatus) {
+                            console.log(textStatus);
+                        }
+                    });
+                    console.log(projectData);
+                }
+
+                // 初始化项目下拉框及承包商下拉框
+                function initSelect(projectData) {
+                    var len = projectData.length;
+                    // console.log(len);
+                    var project = [];
+
+                    for (var i = 0; i < len; i++) {
+                        var tempObj = {};
+                        tempObj["projectName"] = projectData[i]["projectName"];
+                        tempObj["projectId"] = projectData[i]["projectId"];
+                        project.push(tempObj);
+                    }
+
+                    console.log(project);
+                    getProjectSelect(project);
+                    getcontractorSelect(projectData, project[0].projectName);
+
+                    // 使用默认项初始化图表
+                    // updateLineChart();
+
+                }
+
+                // 初始化项目下拉框
+                function getProjectSelect(project) {
+                    $('#projectSelect').empty();
+                    var len = project.length;
+                    for (var i = 0; i < len; i++) {
+                        var projectName = project[i].projectName;
+                        var projectId = project[i].projectId;
+                        var tempHtml = '<option data-id="' + projectId + '" value="' + projectName + '">' +
+                            projectName + '</option>';
+                        $('#projectSelect').append(tempHtml);
+                    }
+                }
+
+                // 填充承包商下拉框
+                function getcontractorSelect(projectData, projectName) {
+                    $('#contractorSelect').empty();
+                    var len = projectData.length;
+                    for (var i = 0; i < len; i++) {
+                        if (projectName === projectData[i]["projectName"]) {
+                            var contractor = projectData[i].contractor;
+                            var contractorLen = contractor.length;
+                            for (var j = 0; j < contractorLen; j++) {
+                                var contractorName = contractor[j]["contractorName"];
+                                var contractorId = contractor[j]["contractorId"];
+                                var tempHtml = '<option data-id="' + contractorId + '" value="' +
+                                    contractorName +
+                                    '">' +
+                                    contractorName + '</option>';
+                                $('#contractorSelect').append(tempHtml);
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                // 项目下拉框点击事件(点击后联动承包商下拉框)
+                function clickProjectSelect() {
+                    $('body').on('change', '#projectSelect', function () {
+                        // console.log($(this));
+                        // console.log($(this).val());
+                        var projectName = $(this).val();
+                        getcontractorSelect(projectData, projectName);
+                        // 在更新项目的同时更新Echart数据为该项目下第一个分包商
+                        updateLineChart();
+                    });
+                }
+
+                // 承包商下拉框点击事件
+                function clickContractorSelect() {
+                    $('body').on('change', '#contractorSelect', function () {
+                        // 更新Echart数据
+                        updateLineChart();
+                    });
+                }
+
+
+                // 更新图表
+                function updateLineChart() {
+                    var projectId = $('#projectSelect option:selected').data("id");
+                    var contractorId = $('#contractorSelect option:selected').data("id");
+                    // var data = {
+                    //     "projectId": projectId,
+                    //     "contractorId": contractorId
+                    // };
+                    $.ajax({
+                        url: "./lineChartData.json", //此处为单项目承包商数据接口
+                        // data: data,
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                            line.setOption({
+                                xAxis: [{
+                                    data: response[0]
+                                }],
+                                series: [{
+                                    data: response[1]
+                                }]
+                            })
+                        },
+                        error: function (XMLHttpRequest, textStatus) {
+                            console.log(textStatus);
+                        }
+                    });
+                };
+
+
+                function initChart() {
+
+                    var lines = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross',
+                                label: {
+                                    backgroundColor: '#2f4554'
+                                }
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: [{
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['2017一季度', '2017二季度', '2017三季度', '2017四季度', '2018一季度', '2018二季度',
+                                '2018三季度'
+                            ]
+                        }],
+                        yAxis: [{
+                            type: 'value'
+                        }],
+                        series: [{
+                            name: '履约情况评分',
+                            type: 'line',
+                            stack: '总量',
+                            color: '#2f4554',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            //areaStyle: { normal: {} },
+                            data: [120, 132, 101, 134, 90, 230, 210]
+                        }]
+                    };
+                    line.setOption(lines);
+                }
+
+                //resize
+                $(window).resize(function () {
+                    line.resize();
+                });
+
+                getProjectData();
+                initSelect(projectData);
+                clickProjectSelect();
+                clickContractorSelect();
+                initChart();
+            }
+
+            function pie1Chart() {
+                var pie1List;
+                //饼状图
+                var pie1 = echarts.init(document.getElementById('pie1'));
+
+                // ajax获取项目和承包商的name及id数据
+                function getpie1ListData() {
+                    $.ajax({
+                        url: "./pie1ListData.json",
+                        dataType: "json",
+                        async: false,
+                        success: function (response) {
+                            console.log(response);
+                            pie1List = response;
+                        },
+                        error: function (XMLHttpRequest, textStatus) {
+                            console.log(textStatus);
+                        }
+                    });
+                    console.log(pie1List);
+                }
+
+                function initContractorListSelect(pie1List) {
+                    $('#contractorListSelect').empty();
+                    var len = pie1List.length;
+                    for (var i = 0; i < len; i++) {
+                        var contractorName = pie1List[i].contractorName;
+                        var contractorId = pie1List[i].contractorId;
+                        var tempHtml = '<option data-id="' + contractorId + '" value="' + contractorName + '">' +
+                            contractorName + '</option>';
+                        $('#contractorListSelect').append(tempHtml);
+                    }
+                    // 初始化图表
+                    // updatePie1Chart();
+                }
+
+                // 分包商下拉框点击事件
+                function clickContractorListSelect() {
+                    $('body').on('change', '#contractorListSelect', function () {
+                        updatePie1Chart();
+                    });
+                }
+
+                function updatePie1Chart() {
+                    var contractorId = $('#contractorListSelect option:selected').data("id");
+                    // var data = {
+                    //     "contractorId": contractorId
+                    // };
+                    $.ajax({
+                        url: "./pie1ChartData.json", //此处为单项目承包商数据接口
+                        // data: data,
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                            pie1.setOption({
+                                series: [{
+                                    data: response
+                                }]
+                            })
+                        },
+                        error: function (XMLHttpRequest, textStatus) {
+                            console.log(textStatus);
+                        }
+                    });
+                }
+
+                function initChart() {
+                    var pies1 = {
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                        },
+                        series: [{
+                            name: '评价结果',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '60%'],
+                            label: {
+                                normal: {
+                                    show: true,
+                                    formatter: '{b}: {c} {d}%'
+                                }
+                            },
+                            data: [{
+                                    value: 335,
+                                    name: '优秀'
+                                },
+                                {
+                                    value: 310,
+                                    name: '良好'
+                                },
+                                {
+                                    value: 234,
+                                    name: '合格'
+                                },
+                                {
+                                    value: 135,
+                                    name: '不合格'
+                                },
+                            ],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }]
+                    };
+                    pie1.setOption(pies1);
+                }
+
+                //resize
+                $(window).resize(function () {
+                    pie1.resize();
+                });
+
+                getpie1ListData();
+                initContractorListSelect(pie1List);
+                clickContractorListSelect();
+                initChart();
+            }
+
+
+            barChart();
+            pieChart();
+            lineChart();
+            pie1Chart();
+
+        })
+    </script>
+</body>
+
+</html>
