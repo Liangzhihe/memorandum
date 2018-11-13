@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <aside class="sidebar"></aside>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var data = [{
+                    "name": "主菜单",
+                    "id": 01,
+                    "child": [{
+                            "name": "首页",
+                            "id": 0101,
+                            "href": "/layout/index.html",
+                        },
+                        {
+                            "name": "次页",
+                            "id": 0102,
+                            "href": "/layout/index-2.html",
+                        }
+                    ]
+                },
+                {
+                    "name": "统计页",
+                    "id": 02,
+                    "child": [{
+                            "name": "统计页1",
+                            "id": 0201,
+                            "href": "/layout/statistics.html",
+                        },
+                        {
+                            "name": "统计页2",
+                            "id": 0202,
+                            "child": [{
+                                    "name": "统计页2-1",
+                                    "id": 020201,
+                                    "href": "/layout/statistics-1.html",
+                                },
+                                {
+                                    "name": "统计页2-2",
+                                    "id": 020202,
+                                    "href": "/layout/statistics-2.html",
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "人员",
+                    "id": 03,
+                    "href": "/layout/person.html"
+                }
+            ];
+
+            
+        })
+    </script>
+</body>
+
+</html>
