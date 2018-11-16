@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #prevDiv {
+            margin-bottom: 20px;
+            width: 400px;
+            height: 500px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+        }
+
+        #prevDiv img {
+            width: 100%;
+            /* height: 100%; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="prevDiv"></div>
+        <form action="#">
+            <input type="file" name="photo" id="" class="upload-photo" />
+        </form>
+
+    </div>
+
+    <script>
+        window.onload = function () {
+            // 图片上传预览，IE10以上可用
+            var btn = document.querySelector('.upload-photo');
+            btn.addEventListener('change', function () {
+                console.log(1);
+                var file = this;
+                var prevDiv = document.querySelector('#prevDiv');
+                if (file.files && file.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (evt) {
+                        prevDiv.innerHTML = '<img src="' + evt.target.result + '" />';
+                    }
+                    reader.readAsDataURL(file.files[0]);
+                } else {
+                    prevDiv.innerHTML =
+                        '<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\'' +
+                        file.value + '\'"></div>';
+                }
+            })
+
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
