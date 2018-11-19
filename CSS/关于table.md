@@ -1,6 +1,44 @@
 # 关于Table
 ### Q：td需固定宽度，防止折行，文字过长时截取文字，超出宽度部分显示省略号。
 ### A:
+<style>
+.table {
+        width: 400px;
+        table-layout: fixed;
+    }
+.th-1 {
+    width: 60%;
+}
+.table tbody td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+</style>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="th-1">title1</th>
+            <th class="th-2">title2</th>
+        </tr>
+    <thead>
+    <tbody>
+        <tr>
+            <td>关某虽一介武夫，亦颇知忠义二字，正所谓择木之禽得其良木</td>
+            <td>俺也一样</td>
+        </tr>
+        <tr>
+            <td>某誓与兄患难与共，终身相伴，生死相随</td>
+            <td>俺也一样</td>
+        </tr>
+        <tr>
+            <td>有违此言，天人共戮之</td>
+            <td>俺也一样</td>
+        </tr>
+    </tbody>
+</table>
 
     <table class="table">
         <thead>
