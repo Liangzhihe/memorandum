@@ -36,7 +36,6 @@
             // 图片上传预览，IE10以上可用
             var btn = document.querySelector('.upload-photo');
             btn.addEventListener('change', function () {
-                console.log(1);
                 var file = this;
                 var prevDiv = document.querySelector('#prevDiv');
                 if (file.files && file.files[0]) {
@@ -46,6 +45,7 @@
                     }
                     reader.readAsDataURL(file.files[0]);
                 } else {
+                    // 兼容低版本IE？
                     prevDiv.innerHTML =
                         '<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\'' +
                         file.value + '\'"></div>';

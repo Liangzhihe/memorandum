@@ -109,13 +109,82 @@ function log() {
 
 // const arr4 = Array.from(new Set(arr));
 // log(arr4);
-let set = new Set([1, 2]);
-let processor = {
-    output(value) {
-        log(value);
-    },
-    process(dataSet) {
-        dataSet.forEach( value => this.output(value));
+// let set = new Set([1, 2]);
+// let processor = {
+//     output(value) {
+//         log(value);
+//     },
+//     process(dataSet) {
+//         dataSet.forEach( value => this.output(value));
+//     }
+// };
+// processor.process(set);
+
+// 数组去重：利用set数据结构的特性.
+// function eliminateDuplicates(arr) {
+//     return [...new Set(arr)];
+// }
+
+// const arr = [6,2,3,3,3,3,4,5,3,1];
+
+// log(eliminateDuplicates(arr));
+// log(eliminateDuplicates(arr).reverse());
+
+// let map = new Map();
+// map.set("title", "Understanding ES6");
+// map.set("year", 2016);
+
+// log(map.get("title"));
+
+// [1,2,3,4].forEach(function(value,index,array) {
+//     log(value,index, array);
+// })
+
+// map.forEach(function(value,index,map) {
+//     log(value, index, map);
+// })
+
+// let arr = [1,2,3,4];
+// log(arr);
+// let arr2 = arr.map(function(value) {
+//    return value += 1;
+// });
+
+// let lessBoolean = arr.every(function(value) {
+//     return value <= 4;
+// })
+
+// log(arr);
+// log(arr2);
+// log(lessBoolean);
+
+
+// let arr = [1,2,3,4,undefined,5,{"autor": "zakas"}];
+
+// for (const iterator of arr.entries()) {
+//     log(iterator);
+// }
+
+// log("\n");
+
+// arr.forEach(function(value) {
+//     log(value);
+// })
+
+// const message = 'A B';
+// for (const c of message) {
+//     log(c);
+// }
+
+class Person {
+    constructor(name) {
+        this.name = name;
     }
-};
-processor.process(set);
+
+    sayName() {
+        log(this.name);
+    }
+}
+
+let person = new Person('Nicholas');
+person.sayName();
