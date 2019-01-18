@@ -22,9 +22,7 @@ var add_the_handlers = function (nodes) {
     }
 }
 
-
-
-// true
+// true 闭包？
 var add_the_handlers2 = function (nodes) {
     var helper = function (i) {
         return function (e) {
