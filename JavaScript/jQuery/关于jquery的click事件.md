@@ -15,8 +15,8 @@
 
 因此，以上代码中，如果`$('.foo')`是动态生成的，那么无论是`$('.foo').click()`还是`$('.foo').on('click', function(){})`均无效。
 
-而应该采用事件委托的方式，即`$('.bar').on('click', '.bar', function(){})`，将点击事件委托到其父元素。
+而应该采用事件委托的方式，即`$('.bar').on('click', '.foo', function(){})`，将点击事件委托到其父元素。
 
 考虑到页面元素的父元素可能因为各种原因而变化，因此更好的方式是直接将事件委托至body或document上，即
-`$('body').on('click', '.bar', function(){})`。
+`$('body').on('click', '.foo', function(){})`。
 
