@@ -2,19 +2,18 @@
 ### Q：td需固定宽度，防止折行，文字过长时截取文字，超出宽度部分显示省略号。
 ### A:
 <style>
-.table {
-        width: 400px;
-        table-layout: fixed;
+    .table {
+            width: 400px;
+            table-layout: fixed;
+        }
+    .th-1 {
+        width: 60%;
     }
-.th-1 {
-    width: 60%;
-}
-.table tbody td {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
+    .table tbody td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>
 
 <table class="table">
