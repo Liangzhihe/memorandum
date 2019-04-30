@@ -12,21 +12,20 @@ Function.prototype.call2 = function(context, ...args) {
   return result;
 }
 
-// const foo = {
-//   value: 1
-// }
+const foo = {
+  value: 1
+}
 
-// function bar(name,age) {
-//   console.log(name);
-//   console.log(age);
-//   console.log(this.value);
-//   return {
-//     name,
-//     value: this.value
-//   }
-// }
+function bar(name,age) {
+  return {
+    name,
+    age,
+    index: this.value
+  }
+}
 
-// bar.call2(foo, 'Liang',18);
+var c = bar.call2(foo, 'Liang',18);
+console.log(c);
 // bar.call2(null, 'L');
 
 // 2. apply
