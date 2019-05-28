@@ -3,7 +3,7 @@
 ### A:
 <style>
     .table {
-            width: 400px;
+            width: 20%;
             table-layout: fixed;
         }
     .th-1 {
