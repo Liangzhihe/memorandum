@@ -98,10 +98,4 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-```    
-
-```js
-
-console.log('fuck')
-
 ```
