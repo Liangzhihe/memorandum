@@ -1,6 +1,7 @@
 # 常用媒体查询
 
 ### 适用于宽度在500px和800px之间的屏幕
-    @media screen and (min-width: 500px) and (max-width: 800px) { ... }
+
+`@media screen and (min-width: 500px) and (max-width: 800px) { ... }`
 
 媒体查询包括颜色、宽高比、设备宽度、高度、网格、方向（横竖屏）、分辨率等，但最常用的还是利用屏幕宽度判断。
