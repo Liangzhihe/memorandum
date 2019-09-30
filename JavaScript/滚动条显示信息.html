@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>文字滚动</title>
+  <style>
+    .main {
+      width: 220px;
+      padding: 0 4px;
+      border: 1px solid #79d6eb;
+      height: 32px;
+      line-height: 32px;
+      color: #000;
+    }
+
+    .wrap {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .content {
+      display: inline-block;
+      white-space: nowrap;
+      margin: 0;
+      animation: a 8s linear infinite;
+    }
+
+    @keyframes a {
+      0% {
+        transform: translateX(0)
+      }
+      100% {
+        transform: translateX(-50%)
+      }
+    }
+
+    span {
+      display: inline-block;
+      white-space: nowrap;
+      padding-right: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div class="wrap">
+      <div class="content">
+          <span class="">多云，短时雷雨大风冰雹，还有龙卷风！龙卷风啊！</span>
+          <span class="">多云，短时雷雨大风冰雹，还有龙卷风！龙卷风啊！</span>
+      </div>
+      
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      // marquee
+    }
+  </script>
+</body>
+
+</html>
